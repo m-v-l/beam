@@ -1266,6 +1266,9 @@ textarea:focus-visible {
   margin: 0;
   line-height: 1.4;
 }
+.how-steps p + p {
+  margin-top: 6px;
+}
 .how-steps svg {
   color: #69738f;
 }

@@ -282,6 +282,56 @@ try {
     windowsVirtualKeyCode: 27,
   });
   await until("!document.querySelector('[role=dialog]')");
+  for (const viewport of [
+    { width: 1280, height: 800, mobile: false },
+    { width: 375, height: 667, mobile: true },
+  ]) {
+    await send("Emulation.setDeviceMetricsOverride", {
+      ...viewport,
+      deviceScaleFactor: 1,
+    });
+    await evaluate(
+      "[...document.querySelectorAll('button')].find(b => b.textContent.includes('How it works')).click()",
+    );
+    await until(
+      "document.querySelector('[role=dialog]')?.innerText.includes('Raydium AMM v4')",
+    );
+    const howCopy = await evaluate(
+      "document.querySelector('[role=dialog]').innerText",
+    );
+    assert.match(
+      howCopy,
+      /0\.42% community, 0\.05% treasury, and 0\.03% founder/,
+    );
+    assert.match(howCopy, /creator payout funding is still undecided/i);
+    assert.match(howCopy, /Token-2022/);
+    assert.match(howCopy, /CPMM candidate fails closed/);
+    assert.match(howCopy, /The program is not deployed/);
+    assert.doesNotMatch(
+      howCopy,
+      /\d+(?:\.\d+)?\s*SOL|no presale|no team allocation|instant sell|guaranteed/i,
+    );
+    assert.equal(
+      await evaluate(
+        "(() => { const panel = document.querySelector('.modal-panel'); const box = panel.getBoundingClientRect(); return box.left >= 0 && box.right <= innerWidth && box.bottom <= innerHeight && panel.scrollHeight >= panel.clientHeight; })()",
+      ),
+      true,
+      `how dialog fits ${viewport.width}x${viewport.height}`,
+    );
+    await send("Input.dispatchKeyEvent", {
+      type: "keyDown",
+      key: "Escape",
+      code: "Escape",
+      windowsVirtualKeyCode: 27,
+    });
+    await until("!document.querySelector('[role=dialog]')");
+  }
+  await send("Emulation.setDeviceMetricsOverride", {
+    width: 375,
+    height: 667,
+    deviceScaleFactor: 1,
+    mobile: true,
+  });
   await send("Page.addScriptToEvaluateOnNewDocument", {
     source:
       "Object.defineProperty(window, 'localStorage', { configurable: true, get() { throw new Error('blocked storage'); } });",

@@ -164,3 +164,33 @@ Slop's current private security-report workflow. Otherwise use GitHub private
 vulnerability reporting if available. If neither private route exists, wait
 for a private maintainer route. Never publish findings or sensitive data in a
 public issue or pull request.
+
+## Cursor Cloud specific instructions
+
+Cloud Agents use Node.js 24 as `node` and `npm` for `web/`. SDK fixture checks
+use Node.js 22 through the `node22` binary:
+
+```sh
+node22 --test sdk/*.test.mjs
+```
+
+`cargo` uses the stable toolchain. `tests/amm-v4-validator` selects Rust 1.99.1
+from that directory's `rust-toolchain.toml`.
+
+Boot serves the sample-data website at <http://127.0.0.1:5173>. Creating a
+token stores a browser-local draft. The wallet control stays unavailable and
+does not connect, sign, or submit. No RPC key or wallet secret is required.
+
+`web/` browser checks need a `chromium` binary on `PATH` after `npm run build`:
+
+```sh
+npm run test:browser --prefix web
+```
+
+Contract, SDK, and website commands are in [CONTRIBUTING.md](CONTRIBUTING.md).
+`python3 scripts/check_fork.py` checks the pinned archive. Leave `upstream/`
+unchanged.
+
+One parallel `tests/legacy-trade-runtime` run reported `unexpected transport
+error` from `solana-banks-client` and passed when that suite was run again.
+Rerun that suite if the transport error appears.

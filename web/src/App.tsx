@@ -24,6 +24,7 @@ import {
   Zap,
 } from "lucide-react";
 import { sampleTokens, type Token } from "./data";
+import { feeComponentSummary, howItWorks } from "./howItWorks";
 import {
   getBrowserStorage,
   nextDraftId,
@@ -510,8 +511,8 @@ function App() {
               <span>Built for a clearer path to Raydium</span>
               <span className="proof-divider" />
               <span>
-                Planned Beam fee: 0.42% community / 0.05% treasury / 0.03%
-                founder; creator payout funding pending
+                Planned Beam fee: {feeComponentSummary}; creator payout funding
+                pending
               </span>
             </div>
           </div>
@@ -1034,55 +1035,26 @@ function App() {
             ) : null}
             {modal === "how" && !selected ? (
               <>
-                <span className="modal-kicker">THE BEAM PATH</span>
-                <h2>From spark to orbit.</h2>
-                <p className="modal-subtitle">
-                  Beam is being built around a curve launch and a separate
-                  Raydium AMM v4 migration. That adapter is not active here.
-                </p>
+                <span className="modal-kicker">{howItWorks.kicker}</span>
+                <h2>{howItWorks.title}</h2>
+                <p className="modal-subtitle">{howItWorks.subtitle}</p>
                 <div className="how-steps">
-                  <div>
-                    <span>01</span>
-                    <div>
-                      <h3>Launch</h3>
-                      <p>
-                        Create a token and start a community on a bonding curve.
-                      </p>
+                  {howItWorks.steps.map((step) => (
+                    <div key={step.index}>
+                      <span>{step.index}</span>
+                      <div>
+                        <h3>{step.title}</h3>
+                        {step.paragraphs.map((paragraph) => (
+                          <p key={paragraph}>{paragraph}</p>
+                        ))}
+                      </div>
+                      <ChevronRight size={18} aria-hidden="true" />
                     </div>
-                    <ChevronRight size={18} />
-                  </div>
-                  <div>
-                    <span>02</span>
-                    <div>
-                      <h3>Grow</h3>
-                      <p>
-                        The specified Beam allocation is 0.50%: 0.42% for the
-                        community bucket, 0.05% treasury, and 0.03% founder.
-                        Creator payout funding is undecided. Collection and
-                        distribution are not active in this preview.
-                      </p>
-                    </div>
-                    <ChevronRight size={18} />
-                  </div>
-                  <div>
-                    <span>03</span>
-                    <div>
-                      <h3>Graduate</h3>
-                      <p>
-                        Curve completion and migration are distinct states.
-                        Raydium AMM v4 is selected, but its adapter is not
-                        integrated here and this preview cannot create a pool.
-                      </p>
-                    </div>
-                    <ChevronRight size={18} />
-                  </div>
+                  ))}
                 </div>
                 <div className="unavailable-note">
                   <Info size={17} />
-                  <span>
-                    These are product goals. The current Beam code is not
-                    deployed.
-                  </span>
+                  <span>{howItWorks.availability}</span>
                 </div>
               </>
             ) : null}

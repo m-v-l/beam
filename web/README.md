@@ -7,6 +7,12 @@ No chain RPC, wallet connection, metadata upload, donation, stream, or trading
 action is present. The selected Raydium AMM v4 adapter and Beam fee collection
 are not implemented by this preview.
 
+The How it works dialog reads `src/howItWorks.ts`. That copy states the
+provisional 42/5/3 basis-point component, the undecided creator-funding choice,
+separate creator, migration, and Raydium pool fees, the fail-closed CPMM
+candidate, and the undecided AMM v4 LP custody choice. It does not publish a
+graduation threshold or enable a launch.
+
 The [visual identity brief](../docs/BRAND.md) defines the crossbar-free arch
 mark, black/blue/purple palette and restrained retro-futurist theme. The
 transparent SVG assets live in `public/`; `src/theme-retro.css` layers the
